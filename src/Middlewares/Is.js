@@ -6,6 +6,8 @@
  * MIT Licensed
  */
 
+const _ = require('lodash')
+const Acl = require('../Acl')
 const ForbiddenException = require('../Exceptions/ForbiddenException')
 
 class Is {
@@ -14,9 +16,9 @@ class Is {
     if (Array.isArray(expression)) {
       expression = expression[0]
     }
-    
+
     const is = Acl.check(expression, operand => _.includes(auth.user.preFetchedRoles, operand))
-    
+
     if (!is) {
       throw new ForbiddenException()
     }

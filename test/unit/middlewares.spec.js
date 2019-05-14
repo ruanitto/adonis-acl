@@ -16,6 +16,7 @@ test.group('Can Middleware', function () {
     const fakeRequest = {
       auth: {
         user: {
+          preFetchedPermissions: ['edit_users', 'delete_users'],
           can () {
             return true
           }
@@ -32,6 +33,7 @@ test.group('Can Middleware', function () {
     const fakeRequest = {
       auth: {
         user: {
+          preFetchedPermissions: ['edit_users', 'delete_users'],
           can () {
             return true
           }
@@ -56,7 +58,7 @@ test.group('Can Middleware', function () {
         }
       }
       const can = new Can()
-      await can.handle(fakeRequest, () => {}, 'edit_users && delete_users')
+      await can.handle(fakeRequest, () => { }, 'edit_users && delete_users')
     } catch (e) {
       assert.equal(e.name, 'ForbiddenException')
       assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')
@@ -75,7 +77,7 @@ test.group('Can Middleware', function () {
         }
       }
       const can = new Can()
-      await can.handle(fakeRequest, () => {}, ['edit_users && delete_users'])
+      await can.handle(fakeRequest, () => { }, ['edit_users && delete_users'])
     } catch (e) {
       assert.equal(e.name, 'ForbiddenException')
       assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')
@@ -88,6 +90,7 @@ test.group('Is Middleware', function () {
     const fakeRequest = {
       auth: {
         user: {
+          preFetchedRoles: ['administrator'],
           is () {
             return true
           }
@@ -104,6 +107,7 @@ test.group('Is Middleware', function () {
     const fakeRequest = {
       auth: {
         user: {
+          preFetchedRoles: ['administrator'],
           is () {
             return true
           }
@@ -128,7 +132,7 @@ test.group('Is Middleware', function () {
         }
       }
       const is = new Is()
-      await is.handle(fakeRequest, () => {}, 'administrator || moderator')
+      await is.handle(fakeRequest, () => { }, 'administrator || moderator')
     } catch (e) {
       assert.equal(e.name, 'ForbiddenException')
       assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')
@@ -147,7 +151,7 @@ test.group('Is Middleware', function () {
         }
       }
       const is = new Is()
-      await is.handle(fakeRequest, () => {}, ['administrator || moderator'])
+      await is.handle(fakeRequest, () => { }, ['administrator || moderator'])
     } catch (e) {
       assert.equal(e.name, 'ForbiddenException')
       assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')
@@ -200,7 +204,7 @@ test.group('Scope Middleware', function () {
         }
       }
       const scope = new Scope()
-      await scope.handle(fakeRequest, () => {}, 'users.create', 'users.delete', 'users.read')
+      await scope.handle(fakeRequest, () => { }, 'users.create', 'users.delete', 'users.read')
     } catch (e) {
       assert.equal(e.name, 'ForbiddenException')
       assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')
@@ -219,7 +223,7 @@ test.group('Scope Middleware', function () {
         }
       }
       const scope = new Scope()
-      await scope.handle(fakeRequest, () => {}, ['users.create', 'users.delete', 'users.read'])
+      await scope.handle(fakeRequest, () => { }, ['users.create', 'users.delete', 'users.read'])
     } catch (e) {
       assert.equal(e.name, 'ForbiddenException')
       assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')

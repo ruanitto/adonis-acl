@@ -5,8 +5,8 @@
  * Copyright(c) 2017 Evgeny Razumov
  * MIT Licensed
  */
-const _ = require("lodash")
-const Acl = require("../Acl")
+const _ = require('lodash')
+const Acl = require('../Acl')
 const ForbiddenException = require('../Exceptions/ForbiddenException')
 
 class Can {
@@ -15,9 +15,11 @@ class Can {
     if (Array.isArray(expression)) {
       expression = expression[0]
     }
-    
-    const can = Acl.check(expression, operand => _.includes(auth.user.preFetchedPermissions, operand))
-    
+
+    const can = Acl.check(expression, operand => {
+      return _.includes(auth.user.preFetchedPermissions, operand)
+    })
+
     if (!can) {
       throw new ForbiddenException()
     }

@@ -16,7 +16,7 @@ class Permission extends Model {
       description: 'min:3|max:1000'
     }
   }
-  
+
   users () {
     return this.belongsToMany('App/Models/User')
   }
