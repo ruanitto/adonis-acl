@@ -6,6 +6,7 @@
  * MIT Licensed
  */
 
+const Acl = require('../Acl')
 const ForbiddenException = require('../Exceptions/ForbiddenException')
 
 class Scope {
@@ -13,7 +14,8 @@ class Scope {
     if (Array.isArray(requiredScope[0])) {
       requiredScope = requiredScope[0]
     }
-    const isAllowed = await auth.user.scope(requiredScope)
+
+    const isAllowed = await Acl.validateScope(requiredScope, auth.user.preFetchedPermissions)
     if (!isAllowed) {
       throw new ForbiddenException()
     }

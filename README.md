@@ -12,13 +12,7 @@ Adonis ACL adds role based permissions to built in [Auth System](https://github.
 1. Add package:
 
 ```bash
-$ npm i @rocketseat/adonis-acl --save
-```
-
-or
-
-```bash
-$ yarn add @rocketseat/adonis-acl
+$ adonis install @rocketseat/adonis-acl
 ```
 
 2. Register ACL providers inside the your start/app.js file.
@@ -26,13 +20,13 @@ $ yarn add @rocketseat/adonis-acl
 ```js
 const providers = [
   ...
-  'adonis-acl/providers/AclProvider',
+  '@rocketseat/adonis-acl/providers/AclProvider',
   ...
 ]
 
 const aceProviders = [
   ...
-  'adonis-acl/providers/CommandsProvider',
+  '@rocketseat/adonis-acl/providers/CommandsProvider',
   ...
 ]
 ```
@@ -230,17 +224,17 @@ await roleAdmin.permissions().fetch();
 
 Syntax:
 
-`and (&&)` - administrator && moderator
+`and` - administrator and moderator
 
-`or (||)` - administrator || moderator
+`or` - administrator or moderator
 
-`not (!)` - administrator && !moderator
+`not (!)` - administrator and !moderator
 
 ```js
 // check roles
 Route.get("/users").middleware([
   "auth:jwt",
-  "is:(administrator || moderator) && !customer"
+  "is:(administrator or moderator) and !customer"
 ]);
 
 // check permissions
@@ -249,6 +243,14 @@ Route.get("/posts").middleware(["auth:jwt", "can:read_posts"]);
 // scopes (using permissions table for scopes)
 Route.get("/posts").middleware(["auth:jwt", "scope:posts.*"]);
 ```
+
+## Using commands
+
+| Command                                             | Description                                                                     | Options                                                                                      |
+| --------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| adonis acl:setup                                    | Publish the package migrations to your application                              |                                                                                              |
+| adonis acl:role \<slug\> [name][description]        | Make a new role                                                                 | --permissions=\<slug list of permissions separated by comma\> Attach permissions to the role |
+| adonis acl:permissions \<slug\> [name][description] | Make a new permission or updates the name and description if the slug was found |                                                                                              |
 
 ## Using in Views
 
@@ -264,7 +266,7 @@ or
 
 ```
 @loggedIn
-  @can('create_posts && delete_posts')
+  @can('create_posts or delete_posts')
     <h2>Protected partial</h2>
   @endcan
 @endloggedIn

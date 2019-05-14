@@ -19,7 +19,7 @@ class Init {
    * @return {void}
    */
   async handle ({ auth, view }, next) {
-    if (auth && auth.user && view && typeof (view.share) === 'function') {
+    if (auth && auth.user) {
       let user = auth.user
       let roles = []
       if (typeof user.getRoles === 'function') {
@@ -33,11 +33,13 @@ class Init {
       auth.user.preFetchedPermissions = permissions
       auth.user.preFetchedRoles = roles
 
-      view.share({
-        acl: {
-          roles, permissions
-        }
-      })
+      if (view && typeof (view.share) === 'function') {
+        view.share({
+          acl: {
+            roles, permissions
+          }
+        })
+      }
     }
 
     await next()
