@@ -1,6 +1,6 @@
 {
   "name": "@rocketseat/adonis-acl",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Adonis ACL system",
   "main": "src/Acl/index.js",
   "directories": {
