@@ -12,13 +12,13 @@ Adonis ACL adds role based permissions to built in [Auth System](https://github.
 1. Add package:
 
 ```bash
-$ npm i adonis-acl --save
+$ npm i @rocketseat/adonis-acl --save
 ```
 
 or
 
 ```bash
-$ yarn add adonis-acl
+$ yarn add @rocketseat/adonis-acl
 ```
 
 2. Register ACL providers inside the your start/app.js file.
