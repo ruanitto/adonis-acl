@@ -16,9 +16,14 @@ class Can {
       expression = expression[0]
     }
 
-    const can = Acl.check(expression, operand => {
-      return _.includes(auth.user.preFetchedPermissions, operand)
-    })
+    let can
+    if (auth.user.preFetchedPermissions) {
+      can = Acl.check(expression, operand => {
+        return _.includes(auth.user.preFetchedPermissions, operand)
+      })
+    } else {
+      can = await auth.user.can(expression)
+    }
 
     if (!can) {
       throw new ForbiddenException()

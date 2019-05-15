@@ -205,7 +205,7 @@ test.group('Scope Middleware', function () {
 })
 
 test.group('Init Middleware', function () {
-  test('should add pre fetched to roles and permissions, when user exists', async (assert) => {
+  test('should not add pre fetched to roles and permissions, when only user exists', async (assert) => {
     const fakeRequest = {
       auth: {
         user: {
@@ -223,7 +223,7 @@ test.group('Init Middleware', function () {
       return assert.isTrue(true)
     })
 
-    assert.containsAllKeys(fakeRequest.auth.user, ['preFetchedPermissions', 'preFetchedRoles'])
+    assert.doesNotHaveAllKeys(fakeRequest.auth.user, ['preFetchedPermissions', 'preFetchedRoles'])
   })
 
   test('should add pre fetched to roles and permissions, when user exists and view is instantiated', async (assert) => {

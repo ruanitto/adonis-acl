@@ -15,7 +15,13 @@ class Scope {
       requiredScope = requiredScope[0]
     }
 
-    const isAllowed = await Acl.validateScope(requiredScope, auth.user.preFetchedPermissions)
+    let isAllowed
+    if (auth.user.preFetchedPermissions) {
+      isAllowed = await Acl.validateScope(requiredScope, auth.user.preFetchedPermissions)
+    } else {
+      isAllowed = await auth.user.scope(requiredScope)
+    }
+
     if (!isAllowed) {
       throw new ForbiddenException()
     }

@@ -17,8 +17,12 @@ class Is {
       expression = expression[0]
     }
 
-    const is = Acl.check(expression, operand => _.includes(auth.user.preFetchedRoles, operand))
-
+    let is = auth.user.is
+    if (auth.user.preFetchedRoles) {
+      is = Acl.check(expression, operand => _.includes(auth.user.preFetchedRoles, operand))
+    } else {
+      is = await auth.user.is(expression)
+    }
     if (!is) {
       throw new ForbiddenException()
     }
