@@ -61,9 +61,9 @@ test.group('Commands', (group) => {
     const Database = use('Database')
     await fixtures.truncate(Database, 'users')
     await fixtures.truncate(Database, 'permissions')
-    await fixtures.truncate(Database, 'permission_user')
+    await fixtures.truncate(Database, 'users_permissions')
     await fixtures.truncate(Database, 'roles')
-    await fixtures.truncate(Database, 'permission_role')
+    await fixtures.truncate(Database, 'roles_permissions')
   })
 
   test('acl:role', async (assert) => {
@@ -103,11 +103,11 @@ test.group('Commands', (group) => {
     let paths = walkSync(ioc.use('Helpers').migrationsPath(), { directories: false })
     paths = paths.map(path => path.substring(14))
     assert.includeMembers(paths, [
-      'create_permissions_table.js',
-      'create_roles_table.js',
-      'create_permission_role_table.js',
-      'create_permission_user_table.js',
-      'create_role_user_table.js'
+      'create_permission_schema.js',
+      'create_role_schema.js',
+      'create_permission_role_schema.js',
+      'create_permission_user_schema.js',
+      'create_role_user_schema.js'
     ])
   })
 })

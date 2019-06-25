@@ -25,7 +25,7 @@ module.exports = {
         table.text('description').nullable()
         table.timestamps()
       }),
-      knex.schema.createTable('permission_user', function (table) {
+      knex.schema.createTable('users_permissions', function (table) {
         table.increments()
         table.integer('permission_id').unsigned()
         table.integer('user_id').unsigned()
@@ -38,13 +38,13 @@ module.exports = {
         table.text('description').nullable()
         table.timestamps()
       }),
-      knex.schema.createTable('role_user', function (table) {
+      knex.schema.createTable('users_roles', function (table) {
         table.increments()
         table.integer('role_id').unsigned()
         table.integer('user_id').unsigned()
         table.timestamps()
       }),
-      knex.schema.createTable('permission_role', function (table) {
+      knex.schema.createTable('roles_permissions', function (table) {
         table.increments()
         table.integer('permission_id').unsigned()
         table.integer('role_id').unsigned()
@@ -55,9 +55,9 @@ module.exports = {
   },
   dropTables: function (knex) {
     const tables = [
-      knex.schema.dropTableIfExists('permission_user'),
-      knex.schema.dropTableIfExists('permission_role'),
-      knex.schema.dropTableIfExists('role_user'),
+      knex.schema.dropTableIfExists('users_permissions'),
+      knex.schema.dropTableIfExists('roles_permissions'),
+      knex.schema.dropTableIfExists('users_roles'),
       knex.schema.dropTableIfExists('users'),
       knex.schema.dropTableIfExists('permissions'),
       knex.schema.dropTableIfExists('roles')

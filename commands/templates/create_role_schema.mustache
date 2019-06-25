@@ -2,7 +2,7 @@
 
 const Schema = use('Schema')
 
-class RolesTableSchema extends Schema {
+class RoleSchema extends Schema {
   up () {
     this.create('roles', table => {
       table.increments()
@@ -18,4 +18,4 @@ class RolesTableSchema extends Schema {
   }
 }
 
-module.exports = RolesTableSchema
+module.exports = RolesSchema

@@ -12,7 +12,7 @@ const Acl = require('../Acl')
 module.exports = class HasPermission {
   register (Model) {
     Model.prototype.permissions = function () {
-      return this.belongsToMany('Adonis/Acl/Permission')
+      return this.belongsToMany('Adonis/Acl/Permission').pivotTable('users_permissions')
     }
 
     Model.prototype.getPermissions = async function () {

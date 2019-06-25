@@ -69,9 +69,9 @@ test.group('Traits', function (group) {
     const Database = use('Database')
     await fixtures.truncate(Database, 'users')
     await fixtures.truncate(Database, 'permissions')
-    await fixtures.truncate(Database, 'permission_user')
+    await fixtures.truncate(Database, 'users_permissions')
     await fixtures.truncate(Database, 'roles')
-    await fixtures.truncate(Database, 'permission_role')
+    await fixtures.truncate(Database, 'roles_permissions')
   })
 
   test('should be able to assign HasPermission trait class to the model', function (assert) {

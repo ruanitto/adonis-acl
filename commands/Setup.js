@@ -71,11 +71,11 @@ class SetupCommand extends Command {
    */
   async handle () {
     try {
-      await this.generateBlueprint('create_permissions_table')
-      await this.generateBlueprint('create_roles_table')
-      await this.generateBlueprint('create_permission_role_table')
-      await this.generateBlueprint('create_permission_user_table')
-      await this.generateBlueprint('create_role_user_table')
+      await this.generateBlueprint('create_permission_schema')
+      await this.generateBlueprint('create_role_schema')
+      await this.generateBlueprint('create_permission_role_schema')
+      await this.generateBlueprint('create_permission_user_schema')
+      await this.generateBlueprint('create_role_user_schema')
     } catch ({ message }) {
       this.error(message)
     }
