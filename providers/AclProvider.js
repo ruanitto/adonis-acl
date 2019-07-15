@@ -7,6 +7,12 @@
  */
 
 const { ServiceProvider } = require('@adonisjs/fold')
+const findIndex = require('lodash/findIndex')
+
+const WRONG_ORDER_MESSAGE = `Make sure to register acl trait after the auth trait. It should be in following order
+  trait('Auth/Client')
+  trait('Acl/Client')
+`
 
 class AclProvider extends ServiceProvider {
   register () {
@@ -53,6 +59,20 @@ class AclProvider extends ServiceProvider {
       const Scope = require('../src/Middlewares/Scope')
       return new Scope()
     })
+
+    this.app.bind('Adonis/Traits/Acl', (app) => {
+      return ({ Request, traits }) => {
+        const authIndex = findIndex(traits, (trait) => trait.action === 'Auth/Client')
+        const aclIndex = findIndex(traits, (trait) => trait.action === 'Acl/Client')
+
+        if (authIndex > -1 && authIndex < aclIndex) {
+          throw new Error(WRONG_ORDER_MESSAGE)
+        }
+
+        require('../src/VowBindings/Request')(Request)
+      }
+    })
+    this.app.alias('Adonis/Traits/Acl', 'Acl/Client')
   }
 
   boot () {

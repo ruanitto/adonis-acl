@@ -39,6 +39,9 @@ test.group('Providers', (group) => {
 
     assert.isDefined(ioc.use('Adonis/Acl/Can'))
     assert.isFalse(ioc._bindings['Adonis/Acl/Can'].singleton)
+
+    assert.isDefined(ioc.use('Adonis/Traits/Acl'))
+    assert.isFalse(ioc._bindings['Adonis/Traits/Acl'].singleton)
   })
 
   test('CommandsProvider', async (assert) => {
