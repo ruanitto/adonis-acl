@@ -65,7 +65,7 @@ class AclProvider extends ServiceProvider {
         const authIndex = findIndex(traits, (trait) => trait.action === 'Auth/Client')
         const aclIndex = findIndex(traits, (trait) => trait.action === 'Acl/Client')
 
-        if (authIndex > -1 && authIndex < aclIndex) {
+        if (aclIndex > -1 && aclIndex < authIndex) {
           throw new Error(WRONG_ORDER_MESSAGE)
         }
 
