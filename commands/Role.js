@@ -69,7 +69,7 @@ class RoleCommand extends Command {
       }
       return result
     }, [])
-    for (let i in permissions) {
+    for (const i in permissions) {
       const permission = permissions[i]
       let entry = await Permission.findBy('slug', permission)
       if (!entry) {

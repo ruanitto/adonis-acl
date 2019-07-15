@@ -20,7 +20,7 @@ class Init {
    */
   async handle ({ auth, view }, next) {
     if (auth && auth.user && view && typeof (view.share) === 'function') {
-      let user = auth.user
+      const user = auth.user
       let roles = []
       if (typeof user.getRoles === 'function') {
         roles = await user.getRoles()

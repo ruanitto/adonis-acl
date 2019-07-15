@@ -21,7 +21,7 @@ module.exports = class HasPermission {
       if (typeof this.roles === 'function') {
         const roles = await this.roles().fetch()
         let rolesPermissions = []
-        for (let role of roles.rows) {
+        for (const role of roles.rows) {
           const rolePermissions = await role.getPermissions()
           rolesPermissions = rolesPermissions.concat(rolePermissions)
         }
