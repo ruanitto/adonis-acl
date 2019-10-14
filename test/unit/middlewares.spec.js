@@ -9,8 +9,98 @@
 const test = require('japa')
 const Is = require('../../src/Middlewares/Is')
 const Can = require('../../src/Middlewares/Can')
+const Acl = require('../../src/Middlewares/Acl')
 const Scope = require('../../src/Middlewares/Scope')
 const Init = require('../../src/Middlewares/Init')
+
+test.group('Acl Middleware', function () {
+  test('should allow, when first arg is string', async (assert) => {
+    const fakeRequest = {
+      auth: {
+        user: {
+          getRoles () {
+            return ['any-role']
+          },
+          getPermissions () {
+            return ['any-permission']
+          }
+        }
+      }
+    }
+
+    const acl = new Acl()
+    await acl.handle(fakeRequest, () => {
+      return assert.isTrue(true)
+    }, 'any-role && any-permission')
+  })
+
+  test('should allow, when first arg is array', async (assert) => {
+    const fakeRequest = {
+      auth: {
+        user: {
+          getRoles () {
+            return ['any-role']
+          },
+          getPermissions () {
+            return ['any-permission']
+          }
+        }
+      }
+    }
+
+    const acl = new Acl()
+    await acl.handle(fakeRequest, () => {
+      return assert.isTrue(true)
+    }, ['any-role && any-permission'])
+  })
+
+  test('should throw error, when first arg is string', async (assert) => {
+    try {
+      const fakeRequest = {
+        auth: {
+          user: {
+            getRoles () {
+              return []
+            },
+            getPermissions () {
+              return []
+            }
+          }
+        }
+      }
+
+      const acl = new Acl()
+      await acl.handle(fakeRequest, () => { }, 'any-role && any-permission')
+    } catch (e) {
+      console.log(e)
+      assert.equal(e.name, 'ForbiddenException')
+      assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')
+    }
+  })
+
+  test('should throw error, when first arg is array', async (assert) => {
+    try {
+      const fakeRequest = {
+        auth: {
+          user: {
+            getRoles () {
+              return []
+            },
+            getPermissions () {
+              return []
+            }
+          }
+        }
+      }
+
+      const acl = new Acl()
+      await acl.handle(fakeRequest, () => { }, ['any-role && any-permission'])
+    } catch (e) {
+      assert.equal(e.name, 'ForbiddenException')
+      assert.equal(e.message, 'Access forbidden. You are not allowed to this resource.')
+    }
+  })
+})
 
 test.group('Can Middleware', function () {
   test('should allow, when first arg is string', async (assert) => {

@@ -38,8 +38,8 @@ class User extends Model {
   ...
   static get traits () {
     return [
-      '@provider:Adonis/Acl/HasRole',
-      '@provider:Adonis/Acl/HasPermission'
+      '@provider:Rocketseat/Acl/HasRole',
+      '@provider:Rocketseat/Acl/HasPermission'
     ]
   }
   ...
@@ -51,8 +51,9 @@ class User extends Model {
 ```js
 const namedMiddleware = {
   ...
-  is: 'Adonis/Acl/Is',
-  can: 'Adonis/Acl/Can',
+  is: 'Rocketseat/Acl/Is',
+  can: 'Rocketseat/Acl/Can',
+  acl: 'Rocketseat/Acl/Acl',
   ...
 }
 ```
@@ -62,7 +63,7 @@ For using in views
 ```js
 const globalMiddleware = [
   ...
-  'Adonis/Acl/Init'
+  'Rocketseat/Acl/Init'
   ...
 ]
 ```
@@ -84,12 +85,14 @@ const roleAdmin = new Role();
 roleAdmin.name = "Administrator";
 roleAdmin.slug = "administrator";
 roleAdmin.description = "manage administration privileges";
+
 await roleAdmin.save();
 
 const roleModerator = new Role();
 roleModerator.name = "Moderator";
 roleModerator.slug = "moderator";
 roleModerator.description = "manage moderator privileges";
+
 await roleModerator.save();
 ```
 
