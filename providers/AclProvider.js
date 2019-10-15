@@ -60,6 +60,11 @@ class AclProvider extends ServiceProvider {
       return new Scope()
     })
 
+    this.app.bind('Adonis/Acl/Acl', () => {
+      const Acl = require('../src/Middlewares/Acl')
+      return new Acl()
+    })
+
     this.app.bind('Adonis/Traits/Acl', (app) => {
       return ({ Request, traits }) => {
         const authIndex = findIndex(traits, (trait) => trait.action === 'Auth/Client')

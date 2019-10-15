@@ -38,8 +38,8 @@ class User extends Model {
   ...
   static get traits () {
     return [
-      '@provider:Adonis/Acl/HasRole',
-      '@provider:Adonis/Acl/HasPermission'
+      '@provider:Rocketseat/Acl/HasRole',
+      '@provider:Rocketseat/Acl/HasPermission'
     ]
   }
   ...
@@ -51,8 +51,10 @@ class User extends Model {
 ```js
 const namedMiddleware = {
   ...
-  is: 'Adonis/Acl/Is',
-  can: 'Adonis/Acl/Can',
+  is: 'Rocketseat/Acl/Is',
+  can: 'Rocketseat/Acl/Can',
+  acl: 'Rocketseat/Acl/Acl',
+  scope: 'Rocketseat/Acl/Scope'
   ...
 }
 ```
@@ -62,7 +64,7 @@ For using in views
 ```js
 const globalMiddleware = [
   ...
-  'Adonis/Acl/Init'
+  'Rocketseat/Acl/Init'
   ...
 ]
 ```
@@ -84,16 +86,18 @@ const roleAdmin = new Role();
 roleAdmin.name = "Administrator";
 roleAdmin.slug = "administrator";
 roleAdmin.description = "manage administration privileges";
+
 await roleAdmin.save();
 
 const roleModerator = new Role();
 roleModerator.name = "Moderator";
 roleModerator.slug = "moderator";
 roleModerator.description = "manage moderator privileges";
+
 await roleModerator.save();
 ```
 
-Before, You should do first, use the `HasRole` trait in Your `User` Model.
+Before, you should do first, use the `HasRole` trait in Your `User` Model.
 
 ```js
 class User extends Model {
@@ -160,7 +164,7 @@ readUsersPermission.description = "read users permission";
 await readUsersPermission.save();
 ```
 
-Before, You should do first, use the `HasPermission` trait in Your `User` Model.
+Before, you should do first, use the `HasPermission` trait in Your `User` Model.
 
 ```js
 class User extends Model {
@@ -240,9 +244,56 @@ Route.get("/users").middleware([
 // check permissions
 Route.get("/posts").middleware(["auth:jwt", "can:read_posts"]);
 
+// check roles and permissions
+Route.put("/posts").middleware(["auth:jwt", "acl:admin or update_posts"]);
+
 // scopes (using permissions table for scopes)
 Route.get("/posts").middleware(["auth:jwt", "scope:posts.*"]);
 ```
+The `acl` **middleware** is used to verify both a role and a permission at the same time, but for it to work properly it is necessary that a `role` and a `permission` doesn't share the same name.
+
+## Vow trait
+
+`adonis-acl` has a `trait` to make it easy to use it while testing with `adonis-vow`. To enable the `addRoles` and `addPermissions` methods, you need to add the trait `Acl/Client`.
+
+The arguments must be your roles or permissions.
+
+```js
+const [admin, moderator] = await Role.all();
+addRole(admin, moderator);
+```
+
+```js
+const [create, read, update, del] = await Permission.all();
+addPermission(create, read, update, del);
+```
+
+Here's an example of how to use it inside a test:
+
+```js
+const { test, trait } = use("Test/Suite")("Awesome test");
+
+trait("Test/ApiClient");
+trait("Auth/Client");
+trait("Acl/Client");
+
+test("awesome some test", async ({ client }) => {
+  const role = await Role.find(1);
+  const permission = await Permission.find(1);
+  const user = await User.find(1);
+
+  const response = await client
+    .put("/posts/1")
+    .loginVia(user)
+    .addRoles(role)
+    .addPermissions(permission)
+    .end();
+});
+```
+
+Both `addRoles` and `addPermissions` inject roles and permissions on the user that was passed by `loginVia` method, so it is vital to call them after `loginVia` as seen on the example above.
+
+It is also crucial that `trait("Auth/Client")` is called before `trait("Acl/Client")`.
 
 ## Using commands
 
