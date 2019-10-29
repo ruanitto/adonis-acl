@@ -69,7 +69,7 @@ const globalMiddleware = [
 ]
 ```
 
-6. Publish the package migrations to your application and run these with `adonis migrations:run`.
+6. Publish the package migrations to your application and run these with `adonis migration:run`.
 
 ```bash
 $ adonis acl:setup
