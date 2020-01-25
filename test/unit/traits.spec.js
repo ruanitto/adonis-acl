@@ -303,4 +303,41 @@ test.group('Traits', function (group) {
     const is = await user.is('administrator && moderator')
     assert.isTrue(is)
   })
+
+  test('should be able to check role if was any', async function (assert) {
+    const Role = use('Adonis/Acl/Role')
+    class User extends Model {
+      static get traits () {
+        return [
+          '@provider:Adonis/Acl/HasRole'
+        ]
+      }
+    }
+    User._bootIfNotBooted()
+    const user1 = await User.create({
+      email: 'foo@bar.baz',
+      username: 'test',
+      password: 'secret'
+    })
+    const user2 = await User.create({
+      email: 'foo2@bar2.baz',
+      username: 'test2',
+      password: 'secret2'
+    })
+    const administrator = await Role.create({
+      name: 'Administrator',
+      slug: 'administrator'
+    })
+    await Role.create({
+      name: 'Moderator',
+      slug: 'moderator'
+    })
+    await user1.roles().attach([
+      administrator.id
+    ])
+    const assertUser1 = await user1.hasAnyRole(['administrator', 'moderator'])
+    const assertUser2 = await user2.hasAnyRole(['administrator', 'moderator'])
+    assert.isTrue(assertUser1)
+    assert.isFalse(assertUser2)
+  })
 })

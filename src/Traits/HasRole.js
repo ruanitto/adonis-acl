@@ -24,5 +24,15 @@ module.exports = class HasRole {
       const roles = await this.getRoles()
       return Acl.check(expression, operand => _.includes(roles, operand))
     }
+
+    Model.prototype.hasAnyRole = async function (roles) {
+      if (!Array.isArray(roles)) throw new Error(`Roles need to be passed in as an array`)
+
+      const attachedRoles = await this.getRoles()
+
+      return roles.some(role => {
+        return attachedRoles.includes(role)
+      })
+    }
   }
 }
