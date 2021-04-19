@@ -1,5 +1,5 @@
 {
-  "name": "@rocketseat/adonis-acl",
+  "name": "@ruanitto/adonis-acl",
   "version": "1.2.0",
   "description": "Adonis ACL system",
   "main": "src/Acl/index.js",
@@ -35,8 +35,7 @@
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.4",
     "macroable": "^2.0.2",
-    "node-exceptions": "^4.0.1",
-    "sqlite3": "^4.0.9"
+    "node-exceptions": "^4.0.1"
   },
   "devDependencies": {
     "@adonisjs/ace": "^4.0.7",
@@ -54,6 +53,7 @@
     "mysql": "^2.13.0",
     "nyc": "^14.1.1",
     "pg": "^7.11.0",
+    "sqlite3": "^4.0.9",
     "standard": "^13.0.2",
     "walk-sync": "^2.0.2"
   },
